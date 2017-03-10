@@ -15,7 +15,7 @@ defmodule IsItDown.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger],
+    [applications: [:logger, :cowboy, :plug],
      mod: {IsItDown.Application, []}]
   end
 
@@ -29,6 +29,9 @@ defmodule IsItDown.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:cowboy, "~> 1.0"},
+      {:plug, "~> 1.0"}
+    ]
   end
 end

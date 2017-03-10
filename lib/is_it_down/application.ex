@@ -10,6 +10,7 @@ defmodule IsItDown.Application do
 
     # Define workers and child supervisors to be supervised
     children = [
+      worker(IsItDown.Router, [])
       # Starts a worker by calling: IsItDown.Worker.start_link(arg1, arg2, arg3)
       # worker(IsItDown.Worker, [arg1, arg2, arg3]),
     ]
