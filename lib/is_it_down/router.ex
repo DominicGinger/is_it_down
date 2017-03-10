@@ -1,6 +1,10 @@
 defmodule IsItDown.Router do
   use Plug.Router
 
+  plug Plug.Static,
+    at: "/ui",
+    from: "ui"
+
   plug :match
   plug :dispatch
 
