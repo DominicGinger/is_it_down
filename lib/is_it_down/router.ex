@@ -1,5 +1,8 @@
 defmodule IsItDown.Router do
+  import Plug.Conn
   use Plug.Router
+
+  @endpoints File.read!("endpoints.json")
 
   plug Plug.Static,
     at: "/ui",
@@ -9,8 +12,21 @@ defmodule IsItDown.Router do
   plug :dispatch
 
   get "/" do
-    conn
-    |> send_resp(200, "Success!")
+    send_resp(conn, 200, "Success!")
+  end
+
+  get "/endpoints" do
+    send_resp(conn,200, @endpoints)
+  end
+
+  get "/check" do
+    conn = fetch_query_params(conn)
+    %{ "url" => url } = conn.params
+    HTTPoison.start
+    IO.puts url
+    %HTTPoison.Response{ status_code: status_code } = HTTPoison.get! url
+    IO.puts status_code
+    send_resp(conn, 200, Integer.to_string(status_code))
   end
 
   def start_link do
