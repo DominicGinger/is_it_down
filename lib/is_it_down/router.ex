@@ -23,9 +23,7 @@ defmodule IsItDown.Router do
     conn = fetch_query_params(conn)
     %{ "url" => url } = conn.params
     HTTPoison.start
-    IO.puts url
     %HTTPoison.Response{ status_code: status_code } = HTTPoison.get! url
-    IO.puts status_code
     send_resp(conn, 200, Integer.to_string(status_code))
   end
 
