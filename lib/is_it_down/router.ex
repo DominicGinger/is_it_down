@@ -4,15 +4,12 @@ defmodule IsItDown.Router do
 
   @endpoints File.read!("endpoints.json")
 
-  plug Plug.Static,
-    at: "/ui",
-    from: "ui"
-
+  plug Plug.Static, at: "/ui", from: "ui"
   plug :match
   plug :dispatch
 
   get "/" do
-    send_resp(conn, 200, "Success!")
+    send_file(conn, 200, "ui/index.html")
   end
 
   get "/endpoints" do
