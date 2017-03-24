@@ -19,8 +19,24 @@ defmodule IsItDown.Router do
   end
 
   get "/endpoints" do
-    @endpoints
-    |> Enum.map(&(Map.put(&1, :status_code, get_status &1.url )))
+    caller = self
+    pids = @endpoints
+           |> Enum.map(fn(endpoint) ->
+spawn(fn ->
+  send(caller, { self, { endpoint, HTTPoison.get!(endpoint.url) } })
+end)
+           end)
+
+    endpoints = for pid <- pids do
+      receive do
+        { ^pid, { endpoint, %HTTPoison.Response{ status_code: status_code } } } ->
+          Map.put(endpoint, :status_code, status_code)
+        { ^pid, { endpoint, _ } } ->
+          Map.put(endpoint, :status_code, 999)
+      end
+    end
+
+    endpoints
     |> Poison.encode!
     |> (&send_resp(conn, 200, &1)).()
   end
