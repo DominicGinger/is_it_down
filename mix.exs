@@ -33,7 +33,8 @@ defmodule IsItDown.Mixfile do
       {:cowboy, "~> 1.0"},
       {:plug, "~> 1.0"},
       {:httpoison, "~> 0.10.0"},
-      {:poison, "~> 3.0"}
+      {:poison, "~> 3.0"},
+      {:flow, "~> 0.11"}
     ]
   end
 end
